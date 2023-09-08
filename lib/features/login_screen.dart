@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/screens/sign_up/sign_up_screen.dart';
+import 'package:tiktok_clone/features/sign_up_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   void onSignUpTap(BuildContext context) {
-    Navigator.of(context).push(
+    Navigator.of(context).pop(
       MaterialPageRoute(
         builder: (context) => const SignUpScreen(),
       ),
