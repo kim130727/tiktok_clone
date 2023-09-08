@@ -1,6 +1,6 @@
 //main.dart
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/screens/sign_up/sign_up_screen.dart';
+import 'package:tiktok_clone/features/sign_up_screen.dart';
 
 void main() {
   runApp(const TiktokApp());
