@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/birthday_screen.dart';
 import 'package:tiktok_clone/features/widgets/form.button.dart';
 
 class PasswordScreen extends StatefulWidget {
@@ -35,14 +36,8 @@ class _PasswordScreenState extends State<PasswordScreen> {
     super.dispose();
   }
 
-  String? _isPasswordValid() {
-    if (_password.isEmpty) return null;
-    final regExp = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    if (!regExp.hasMatch(_password)) {
-      return "Email Not valid";
-    }
-    return null;
+  bool _isPasswordValid() {
+    return _password.isEmpty && _password.length > 8;
   }
 
   void _onScaffoldTap() {
@@ -50,11 +45,11 @@ class _PasswordScreenState extends State<PasswordScreen> {
   }
 
   void _onSubmit() {
-    if (_password.isEmpty || _isPasswordValid() != null) return;
+    if (_password.isEmpty) return;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const PasswordScreen(),
+        builder: (context) => const BirthdayScreen(),
       ),
     );
   }
@@ -64,7 +59,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
   }
 
   void _toggleObscureText() {
-    _obscureText = !_obscureText;
+    _obscureText = !_obscureText; //true->false, false->true로 전환
     setState(() {});
   }
 
@@ -113,14 +108,15 @@ class _PasswordScreenState extends State<PasswordScreen> {
                     GestureDetector(
                       onTap: _toggleObscureText,
                       child: FaIcon(
-                        FontAwesomeIcons.eye,
+                        _obscureText
+                            ? FontAwesomeIcons.eye
+                            : FontAwesomeIcons.eyeSlash,
                         color: Colors.grey.shade500,
                         size: Sizes.size20,
                       ),
                     ),
                   ]),
                   hintText: "Make it strong",
-                  errorText: _isPasswordValid(),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.grey.shade400,
@@ -134,12 +130,31 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 ),
                 cursorColor: Theme.of(context).primaryColor,
               ),
-              Gaps.v16,
+              Gaps.v10,
+              const Text(
+                'Your password must have:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Gaps.v10,
+              Row(
+                children: [
+                  FaIcon(
+                    FontAwesomeIcons.circleCheck,
+                    size: Sizes.size20,
+                    color: _isPasswordValid()
+                        ? Colors.green
+                        : Colors.grey.shade400,
+                  ),
+                  Gaps.h5,
+                  const Text("8 to 20 characters")
+                ],
+              ),
+              Gaps.v28,
               GestureDetector(
                   onTap: _onSubmit,
-                  child: FormButton(
-                      disabled:
-                          _password.isEmpty || _isPasswordValid() != null)),
+                  child: FormButton(disabled: _isPasswordValid())),
             ],
           ),
         ),
