@@ -37,7 +37,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
   }
 
   bool _isPasswordValid() {
-    return _password.isEmpty && _password.length > 8;
+    return _password.isNotEmpty && _password.length > 8;
   }
 
   void _onScaffoldTap() {
@@ -45,7 +45,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
   }
 
   void _onSubmit() {
-    if (_password.isEmpty) return;
+    if (!_isPasswordValid()) return;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -80,7 +80,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gaps.v20,
+              Gaps.v40,
               const Text(
                 "Password",
                 style: TextStyle(
@@ -153,8 +153,11 @@ class _PasswordScreenState extends State<PasswordScreen> {
               ),
               Gaps.v28,
               GestureDetector(
-                  onTap: _onSubmit,
-                  child: FormButton(disabled: _isPasswordValid())),
+                onTap: _onSubmit,
+                child: FormButton(
+                  disabled: !_isPasswordValid(),
+                ),
+              ),
             ],
           ),
         ),
