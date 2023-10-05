@@ -15,8 +15,16 @@ class LoginFormScreen extends StatefulWidget {
 class _LoginFormScreenState extends State<LoginFormScreen> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
+  Map<String, String> formData = {};
+
   void _onSubmitTap() {
-    _formkey.currentState?.validate();
+    if (_formkey.currentState != null) {
+      if (_formkey.currentState!.validate()) {
+        //true만 아무런 에러가 없음
+        _formkey.currentState!.save();
+        print(formData.values);
+      }
+    }
   }
 
   @override
@@ -39,7 +47,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   hintText: 'Email',
                 ),
                 validator: (value) {
-                  return "i dont like your email";
+                  return null;
+                },
+                onSaved: (newValue) {
+                  if (newValue != null) {
+                    formData['email'] = newValue;
+                  }
                 },
               ),
               Gaps.v16,
@@ -48,7 +61,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   hintText: 'Password',
                 ),
                 validator: (value) {
-                  return "wrong password";
+                  return null;
+                },
+                onSaved: (newValue) {
+                  if (newValue != null) {
+                    formData['password'] = newValue;
+                  }
                 },
               ),
               Gaps.v28,
