@@ -45,9 +45,15 @@ const interests = [
   "Home & Garden",
 ];
 
-class InterestsScreen extends StatelessWidget {
+class InterestsScreen extends StatefulWidget {
   const InterestsScreen({super.key});
 
+  @override
+  State<InterestsScreen> createState() => _InterestsScreenState();
+}
+
+class _InterestsScreenState extends State<InterestsScreen> {
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,21 +132,10 @@ class InterestsScreen extends StatelessWidget {
             left: Sizes.size24,
             right: Sizes.size24,
           ),
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: Sizes.size20,
-            ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-            ),
-            child: const Text(
-              'Next',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: Sizes.size16,
-              ),
-            ),
+          child: CupertinoButton(
+            onPressed: () {},
+            color: Theme.of(context).primaryColor,
+            child: const Text('Next'),
           ),
         ),
       ),
