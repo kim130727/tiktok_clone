@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/onboarding/interest_button.dart';
 
 const interests = [
   "Daily Life",
@@ -59,6 +60,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
 
   void _onScroll() {
     if (_scrollController.offset > 100) {
+      if (_showTitle) return;
       setState(() {
         _showTitle = true;
       });
@@ -126,32 +128,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                   spacing: 20,
                   children: [
                     for (var interest in interests)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: Sizes.size16,
-                          horizontal: Sizes.size24,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(Sizes.size32),
-                          border: Border.all(
-                            color: Colors.black.withOpacity(0.1),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 5,
-                              spreadRadius: 5,
-                            )
-                          ],
-                        ),
-                        child: Text(
-                          interest,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      InterestButton(interest: interest),
                   ],
                 ),
               ],
