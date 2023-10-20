@@ -49,16 +49,13 @@ const interests = [
 
 class InterestsScreen extends StatefulWidget {
   const InterestsScreen({super.key});
-
   @override
   State<InterestsScreen> createState() => _InterestsScreenState();
 }
 
 class _InterestsScreenState extends State<InterestsScreen> {
   final ScrollController _scrollController = ScrollController();
-
   bool _showTitle = false;
-
   void _onScroll() {
     if (_scrollController.offset > 100) {
       if (_showTitle) return;
@@ -150,16 +147,16 @@ class _InterestsScreenState extends State<InterestsScreen> {
         elevation: 2,
         child: Padding(
           padding: const EdgeInsets.only(
-            bottom: Sizes.size40,
-            top: Sizes.size16,
-            left: Sizes.size24,
-            right: Sizes.size24,
+            bottom: Sizes.size2,
+            top: Sizes.size2,
+            left: Sizes.size2,
+            right: Sizes.size2,
           ),
           child: GestureDetector(
             onTap: _onNextTap,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                vertical: Sizes.size16 + Sizes.size2,
+                vertical: Sizes.size10 + Sizes.size2,
               ),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
