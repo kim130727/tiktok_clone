@@ -24,10 +24,14 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         //true만 아무런 에러가 없음
         _formkey.currentState!.save();
         //print(formData.values);
-        Navigator.of(context).push(
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const InterestsScreen(),
           ),
+          (route) {
+            print(route);
+            return false;
+          },
         );
       }
     }
