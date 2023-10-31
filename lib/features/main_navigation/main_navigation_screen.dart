@@ -39,29 +39,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: screens[_selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onTap,
-        destinations: const [
-          NavigationDestination(
-            icon: FaIcon(
-              FontAwesomeIcons.house,
-              color: Colors.white,
-            ),
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: FaIcon(CupertinoIcons.house),
             label: "Home",
           ),
-          NavigationDestination(
-            icon: FaIcon(
-              FontAwesomeIcons.magnifyingGlass,
-              color: Colors.white,
-            ),
+          BottomNavigationBarItem(
+            icon: FaIcon(CupertinoIcons.search),
             label: "Search",
           ),
         ],
       ),
+      tabBuilder: (context, index) => screens[index],
     );
   }
 }
