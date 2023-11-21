@@ -18,78 +18,107 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost> {
-  final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset("lib/features/assets/videos/0003.mp4");
+class _VideoPostState extends State<VideoPost>
+    with SingleTickerProviderStateMixin {
+  final VideoPlayerController videoPlayerController =
+      VideoPlayerController.asset("lib/features/assets/videos/candy_dance.mp4");
+  Duration animationDuration = const Duration(milliseconds: 200);
 
-  void _onVideoChange() {
-    if (_videoPlayerController.value.isInitialized) {
-      if (_videoPlayerController.value.duration ==
-          _videoPlayerController.value.position) {
+  late final AnimationController animationController;
+
+  bool isPaused = false;
+
+  void onVideoChange() {
+    if (videoPlayerController.value.isInitialized) {
+      if (videoPlayerController.value.duration ==
+          videoPlayerController.value.position) {
         widget.onVideoFinished();
       }
     }
   }
 
-  void _initVideoPlayer() async {
-    await _videoPlayerController.initialize();
+  void initVideoPlayer() async {
+    await videoPlayerController.initialize();
 
+    videoPlayerController.addListener(onVideoChange);
     setState(() {});
-    _videoPlayerController.addListener(_onVideoChange);
   }
 
   @override
   void initState() {
     super.initState();
-    _initVideoPlayer();
+    initVideoPlayer();
+
+    animationController = AnimationController(
+      vsync: this,
+      lowerBound: 1.0,
+      upperBound: 1.5,
+      value: 1.5,
+      duration: animationDuration,
+    );
+    animationController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
+    videoPlayerController.dispose();
     super.dispose();
   }
 
-  void _onVisibilityChanged(VisibilityInfo info) {
-    if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play();
+  void onVisibilityChanged(VisibilityInfo info) {
+    if (info.visibleFraction == 1 && !videoPlayerController.value.isPlaying) {
+      videoPlayerController.play();
     }
   }
 
-  void _onTogglePause() {
-    if (_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.pause();
+  void onTogglePause() {
+    if (videoPlayerController.value.isPlaying) {
+      videoPlayerController.pause();
+      animationController.reverse();
     } else {
-      _videoPlayerController.play();
+      videoPlayerController.play();
+      animationController.forward();
     }
+    setState(() {
+      isPaused = !isPaused;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
       key: Key("${widget.index}"),
-      onVisibilityChanged: _onVisibilityChanged,
+      onVisibilityChanged: onVisibilityChanged,
       child: Stack(
         children: [
           Positioned.fill(
-            child: _videoPlayerController.value.isInitialized
-                ? VideoPlayer(_videoPlayerController)
+            child: videoPlayerController.value.isInitialized
+                ? VideoPlayer(videoPlayerController)
                 : Container(
                     color: Colors.black,
                   ),
           ),
           Positioned.fill(
             child: GestureDetector(
-              onTap: _onTogglePause,
+              onTap: onTogglePause,
             ),
           ),
-          const Positioned.fill(
+          Positioned.fill(
             child: IgnorePointer(
               child: Center(
-                child: FaIcon(
-                  FontAwesomeIcons.play,
-                  color: Colors.white,
-                  size: Sizes.size52,
+                child: Transform.scale(
+                  scale: animationController.value,
+                  child: AnimatedOpacity(
+                    opacity: isPaused ? 1 : 0,
+                    duration: animationDuration,
+                    child: const FaIcon(
+                      FontAwesomeIcons.play,
+                      color: Colors.white,
+                      size: Sizes.size52,
+                    ),
+                  ),
                 ),
               ),
             ),
