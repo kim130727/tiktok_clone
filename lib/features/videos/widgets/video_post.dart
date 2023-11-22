@@ -56,9 +56,6 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: animationDuration,
     );
-    animationController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -108,8 +105,14 @@ class _VideoPostState extends State<VideoPost>
           Positioned.fill(
             child: IgnorePointer(
               child: Center(
-                child: Transform.scale(
-                  scale: animationController.value,
+                child: AnimatedBuilder(
+                  animation: animationController,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: animationController.value,
+                      child: child,
+                    );
+                  },
                   child: AnimatedOpacity(
                     opacity: isPaused ? 1 : 0,
                     duration: animationDuration,
