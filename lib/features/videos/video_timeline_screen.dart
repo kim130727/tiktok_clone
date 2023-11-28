@@ -31,6 +31,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   }
 
   void _onVideoFinished() {
+    return; //여기서 그냥 return 해버림, 영상이 끝나도 아무일도 일어나지 않음
     _pageController.nextPage(duration: _scrollDuration, curve: _scrollCurve);
   }
 

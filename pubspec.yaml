@@ -42,6 +42,7 @@ dependencies:
   visibility_detector: ^0.3.3
   video_player_web_hls: ^1.1.0
   fijkplayer: ^0.11.0
+  marquee: ^2.2.3
 
 dev_dependencies:
   flutter_test:
