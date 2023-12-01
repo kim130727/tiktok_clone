@@ -6,6 +6,7 @@ import 'package:marquee/marquee.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -94,10 +95,13 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void onVisibilityChanged(VisibilityInfo info) {
-    if (info.visibleFraction == 1 && !videoPlayerController.value.isPlaying) {
+    if (info.visibleFraction == 1 &&
+        !isPaused &&
+        !videoPlayerController.value.isPlaying) {
       videoPlayerController.play();
     }
   }
+  //영상의 visibility가 변하고 영상이 전부 화면에 들어 있으면서 재생이 안되고 있다면 재생하도록 함
 
   void onTogglePause() {
     if (videoPlayerController.value.isPlaying) {
@@ -110,6 +114,19 @@ class _VideoPostState extends State<VideoPost>
     setState(() {
       isPaused = !isPaused;
     });
+  }
+
+  void _onCommentsTap(BuildContext context) async {
+    if (videoPlayerController.value.isPlaying) {
+      onTogglePause();
+    } //댓글 버튼을 누르면 pause가 되는 함수
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const VideoComments(),
+    );
+    print('closed'); //await로 인해 댓글창을 닫아야 작동됨
+    onTogglePause();
   }
 
   @override
@@ -257,12 +274,12 @@ class _VideoPostState extends State<VideoPost>
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             bottom: 20,
             right: 10,
             child: Column(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
@@ -271,11 +288,15 @@ class _VideoPostState extends State<VideoPost>
                   child: Text("나율"),
                 ),
                 Gaps.v24,
-                VideoButton(icon: FontAwesomeIcons.solidHeart, text: "100M"),
+                const VideoButton(
+                    icon: FontAwesomeIcons.solidHeart, text: "100M"),
                 Gaps.v24,
-                VideoButton(icon: FontAwesomeIcons.solidComment, text: "33K"),
+                GestureDetector(
+                    onTap: () => _onCommentsTap(context),
+                    child: const VideoButton(
+                        icon: FontAwesomeIcons.solidComment, text: "33K")),
                 Gaps.v24,
-                VideoButton(icon: FontAwesomeIcons.share, text: "Share"),
+                const VideoButton(icon: FontAwesomeIcons.share, text: "Share"),
               ],
             ),
           ),
