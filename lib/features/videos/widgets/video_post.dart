@@ -122,6 +122,7 @@ class _VideoPostState extends State<VideoPost>
     } //댓글 버튼을 누르면 pause가 되는 함수
     await showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => const VideoComments(),
     );
