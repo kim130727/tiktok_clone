@@ -100,6 +100,9 @@ class _VideoPostState extends State<VideoPost>
         !videoPlayerController.value.isPlaying) {
       videoPlayerController.play();
     }
+    if (videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      onTogglePause();
+    }
   }
   //영상의 visibility가 변하고 영상이 전부 화면에 들어 있으면서 재생이 안되고 있다면 재생하도록 함
 
