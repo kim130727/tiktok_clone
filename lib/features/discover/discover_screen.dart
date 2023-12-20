@@ -15,17 +15,44 @@ final tabs = [
   "Brands",
 ];
 
-class DiscoverScreen extends StatelessWidget {
+class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
+
+  @override
+  State<DiscoverScreen> createState() => _DiscoverScreenState();
+}
+
+class _DiscoverScreenState extends State<DiscoverScreen> {
+  final TextEditingController _textEditingController =
+      TextEditingController(text: "Initial Text"); //search form 자동완성
+
+  void _onSearchChanged(String value) {
+    print("Searching form $value");
+  } //Search 문구 출력
+
+  void _onSearchSubmitted(String value) {
+    print("Submitted $value");
+  } //버튼 누르면 출력
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose(); //controller는 꼭 dispose 해야 함
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
+        resizeToAvoidBottomInset: false, //키보드가 나오면 scaffold resize 조절 안하게 조정
         appBar: AppBar(
           elevation: 1,
-          title: const Text('Discover'),
+          title: CupertinoSearchTextField(
+            controller: _textEditingController,
+            onChanged: _onSearchChanged,
+            onSubmitted: _onSearchSubmitted,
+          ),
           bottom: TabBar(
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
@@ -50,6 +77,8 @@ class DiscoverScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             GridView.builder(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior
+                  .onDrag, //GridView를 드래그할 때마다 keyboard가 자동으로 사라짐
               itemCount: 20, //지정해주지 않으면 무한으로 나옴
               padding: const EdgeInsets.all(
                 Sizes.size1,
@@ -63,14 +92,21 @@ class DiscoverScreen extends StatelessWidget {
               ),
               itemBuilder: (context, index) => Column(
                 children: [
-                  AspectRatio(
-                    aspectRatio: 9 / 16,
-                    child: FadeInImage.assetNetwork(
-                      fit: BoxFit.cover, //강제로 특정한 비율을 따르는 위젯
-                      placeholder:
-                          "C:\\flutter\\tiktok_clone\\lib\\features\\assets\\images\\image2.jpg",
-                      image:
-                          "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&Wixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+                  Container(
+                    clipBehavior: Clip.hardEdge, //이미지가 overflow 되는 것을 조정
+                    decoration: BoxDecoration(
+                      //이미지 테두리를 동그랗게
+                      borderRadius: BorderRadius.circular(Sizes.size4),
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 9 / 16,
+                      child: FadeInImage.assetNetwork(
+                        fit: BoxFit.cover, //강제로 특정한 비율을 따르는 위젯
+                        placeholder:
+                            "C:\\flutter\\tiktok_clone\\lib\\features\\assets\\images\\image2.jpg",
+                        image:
+                            "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&Wixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+                      ),
                     ),
                   ),
                   Gaps.v10,
