@@ -21,6 +21,8 @@ class TiktokApp extends StatelessWidget {
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE9435A),
         ), //textSelection에 대한 theme 설정 가능함
+        splashColor: Colors.transparent, //클릭했을 때 스플래쉬 효과를 꺼버림
+        highlightColor: Colors.transparent, //아예 스플래쉬 효과를 꺼버림
         appBarTheme: const AppBarTheme(
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
