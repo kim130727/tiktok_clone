@@ -10,12 +10,33 @@ class ActivityScreen extends StatefulWidget {
   State<ActivityScreen> createState() => _ActivityScreenState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen> {
+class _ActivityScreenState extends State<ActivityScreen>
+    with SingleTickerProviderStateMixin {
+  //Ticker는 모든 애니메이션 프레임에서 Callback Function 호출하는 시계
+
   final List<String> _notifications = List.generate(20, (index) => "${index}h");
+
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 200),
+  );
+  //final이지만 this나 다른 instance member를 참조하려면 late를 써야함
+
+  late final Animation<double> _animation =
+      Tween(begin: 0.0, end: 0.5).animate(_animationController);
+  //Tween 애니메이션 범위를 지정하는 클래스
 
   void _onDismissed(String notification) {
     _notifications.remove(notification);
     setState(() {});
+  }
+
+  void _onTitleTap() {
+    if (_animationController.isCompleted) {
+      _animationController.reverse();
+    } else {
+      _animationController.forward();
+    }
   }
 
   @override
@@ -23,7 +44,23 @@ class _ActivityScreenState extends State<ActivityScreen> {
     print(_notifications);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All activity"),
+        title: GestureDetector(
+          onTap: _onTitleTap,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("All activity"),
+              Gaps.h2,
+              RotationTransition(
+                turns: _animation,
+                child: const FaIcon(
+                  FontAwesomeIcons.chevronDown,
+                  size: Sizes.size14,
+                ),
+              )
+            ],
+          ),
+        ),
       ),
       body: ListView(
         children: [
