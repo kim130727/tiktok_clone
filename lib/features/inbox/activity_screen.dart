@@ -43,6 +43,8 @@ class _ActivityScreenState extends State<ActivityScreen>
     }
   ];
 
+  bool _showBarrier = false; //위젯트리에서 barrier를 보여주고 숨기는 역할
+
   late final AnimationController _animationController = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 200),
@@ -59,17 +61,30 @@ class _ActivityScreenState extends State<ActivityScreen>
     end: Offset.zero,
   ).animate(_animationController);
 
+  late final Animation<Color?> _barrierAnimation = ColorTween(
+    begin: Colors.transparent,
+    end: Colors.black38,
+  ).animate(_animationController);
+  //modal 효과에 대한 색깔을 설정해줌
+
   void _onDismissed(String notification) {
     _notifications.remove(notification);
     setState(() {});
   }
 
-  void _onTitleTap() {
+  void _toggleAnimations() async {
     if (_animationController.isCompleted) {
-      _animationController.reverse();
+      await _animationController.reverse();
     } else {
       _animationController.forward();
     }
+    //forward에서는 Barrier가 바로 나오게 함
+    //reverse에서는 reverse를 await하고 동작이 끝난 다음에 이 boolean 값 바꾸기
+    //동작이 끝난 다음에 Barrier가 없어짐
+
+    setState(() {
+      _showBarrier = !_showBarrier; //false는 true가 되고 true는 false가 됨
+    });
   }
 
   @override
@@ -78,7 +93,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onTitleTap,
+          onTap: _toggleAnimations,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -197,6 +212,14 @@ class _ActivityScreenState extends State<ActivityScreen>
                 )
             ],
           ),
+          if (_showBarrier) //_showBarrier가 true일 때만 보이도록
+            AnimatedModalBarrier(
+              color: _barrierAnimation,
+              dismissible: true, //onDismiss 패널을 없애려고 화면클릭
+              onDismiss: _toggleAnimations, //함수 실행
+            ),
+          //유저가 All activity를 클릭하지 않았을 때 barrier를 없애야 함
+
           SlideTransition(
             position: _panelAnimation,
             child: Container(
@@ -236,7 +259,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
