@@ -2,13 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/activity_screen.dart';
+import 'package:tiktok_clone/features/inbox/chats_screen.dart';
 
-class InboxScreen extends StatelessWidget {
+class InboxScreen extends StatefulWidget {
   const InboxScreen({super.key});
 
-  void _onDmPressed() {} //나중에 이 코드를 실행했을때 Navigation 되도록 함
+  @override
+  State<InboxScreen> createState() => _InboxScreenState();
+}
 
-  void _onActivityTap(BuildContext context) {
+class _InboxScreenState extends State<InboxScreen> {
+  //나중에 이 코드를 실행했을때 Navigation 되도록 함
+  void _onDmPressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ChatsScreen(),
+      ),
+    );
+  }
+
+  void _onActivityTap() {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const ActivityScreen(),
@@ -36,7 +49,7 @@ class InboxScreen extends StatelessWidget {
         //activity, New followers 위젯을 render함
         children: [
           ListTile(
-            onTap: () => _onActivityTap(context), //activity screen으로 넘어가게 됨
+            onTap: _onActivityTap, //activity screen으로 넘어가게 됨
             title: const Text(
               'Activity',
               style: TextStyle(
