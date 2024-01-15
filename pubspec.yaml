@@ -71,6 +71,7 @@ flutter:
     - C:\flutter\tiktok_clone\lib\features\assets\videos\candy_dance.mp4
     - C:\flutter\tiktok_clone\lib\features\assets\videos\0003.mp4
     - C:\flutter\tiktok_clone\lib\features\assets\images\image2.jpg
+    - C:\flutter\tiktok_clone\lib\features\assets\images\placeholder.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
