@@ -25,7 +25,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               StretchMode.fadeTitle,
             ],
             background: Image.asset(
-              "assets/images/placeholder.jpg",
+              "lib/features/assets/images/placeholder.jpg",
               fit: BoxFit.cover,
             ),
             title: const Text("Hello!"),
