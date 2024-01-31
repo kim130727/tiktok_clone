@@ -12,8 +12,6 @@ class ActivityScreen extends StatefulWidget {
 
 class _ActivityScreenState extends State<ActivityScreen>
     with SingleTickerProviderStateMixin {
-  //Ticker는 모든 애니메이션 프레임에서 Callback Function 호출하는 시계
-
   final List<String> _notifications = List.generate(20, (index) => "${index}h");
 
   final List<Map<String, dynamic>> _tabs = [
@@ -43,21 +41,18 @@ class _ActivityScreenState extends State<ActivityScreen>
     }
   ];
 
-  bool _showBarrier = false; //위젯트리에서 barrier를 보여주고 숨기는 역할
+  bool _showBarrier = false;
 
   late final AnimationController _animationController = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 200),
   );
-  //final이지만 this나 다른 instance member를 참조하려면 late를 써야함
 
   late final Animation<double> _arrowAnimation =
       Tween(begin: 0.0, end: 0.5).animate(_animationController);
-  //Tween 애니메이션 범위를 지정하는 클래스
 
   late final Animation<Offset> _panelAnimation = Tween(
-    begin: const Offset(0, -1), //패널을 수직축으로 -0.5만큼 옮기자 비율로 생각해야 함
-    //-1은 수직축으로 100% 위로 올리기, 위로 완전히 올라감
+    begin: const Offset(0, -1),
     end: Offset.zero,
   ).animate(_animationController);
 
@@ -65,7 +60,6 @@ class _ActivityScreenState extends State<ActivityScreen>
     begin: Colors.transparent,
     end: Colors.black38,
   ).animate(_animationController);
-  //modal 효과에 대한 색깔을 설정해줌
 
   void _onDismissed(String notification) {
     _notifications.remove(notification);
@@ -78,18 +72,20 @@ class _ActivityScreenState extends State<ActivityScreen>
     } else {
       _animationController.forward();
     }
-    //forward에서는 Barrier가 바로 나오게 함
-    //reverse에서는 reverse를 await하고 동작이 끝난 다음에 이 boolean 값 바꾸기
-    //동작이 끝난 다음에 Barrier가 없어짐
 
     setState(() {
-      _showBarrier = !_showBarrier; //false는 true가 되고 true는 false가 됨
+      _showBarrier = !_showBarrier;
     });
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(_notifications);
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
@@ -213,14 +209,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                 )
             ],
           ),
-          if (_showBarrier) //_showBarrier가 true일 때만 보이도록
+          if (_showBarrier)
             AnimatedModalBarrier(
               color: _barrierAnimation,
-              dismissible: true, //onDismiss 패널을 없애려고 화면클릭
-              onDismiss: _toggleAnimations, //함수 실행
+              dismissible: true,
+              onDismiss: _toggleAnimations,
             ),
-          //유저가 All activity를 클릭하지 않았을 때 barrier를 없애야 함
-
           SlideTransition(
             position: _panelAnimation,
             child: Container(
@@ -236,7 +230,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ),
               ),
               child: Column(
-                mainAxisSize: MainAxisSize.min, //컬럼이 화면 전체를 차지하지 않도록
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   for (var tab in _tabs)
                     ListTile(

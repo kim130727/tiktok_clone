@@ -1,29 +1,43 @@
 //main.dart
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
+import 'package:tiktok_clone/features/sign_up_screen.dart';
 
-void main() {
-  runApp(const TiktokApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+    ],
+  );
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark,
+  );
+
+  runApp(const TikTokApp());
 }
 
-class TiktokApp extends StatelessWidget {
-  const TiktokApp({super.key});
+class TikTokApp extends StatelessWidget {
+  const TikTokApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFFE9435A),
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE9435A),
-        ), //textSelection에 대한 theme 설정 가능함
-        splashColor: Colors.transparent, //클릭했을 때 스플래쉬 효과를 꺼버림
-        highlightColor: Colors.transparent, //아예 스플래쉬 효과를 꺼버림
+        ),
+        splashColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
@@ -35,7 +49,7 @@ class TiktokApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MainNavigationScreen(),
+      home: const SignUpScreen(),
     );
   }
 }
