@@ -1,5 +1,6 @@
 //video_post.dart
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marquee/marquee.dart';
@@ -60,7 +61,10 @@ class _VideoPostState extends State<VideoPost>
     videoPlayerController =
         VideoPlayerController.asset("lib/features/assets/videos/0003.mp4");
     await videoPlayerController.initialize();
-    await videoPlayerController.setLooping(true); //future를 return함
+    await videoPlayerController.setLooping(true);
+    if (kIsWeb) {
+      await videoPlayerController.setVolume(0);
+    } //future를 return함
     videoPlayerController.addListener(onVideoChange);
     setState(() {});
   }
@@ -91,6 +95,7 @@ class _VideoPostState extends State<VideoPost>
   @override
   void dispose() {
     videoPlayerController.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
