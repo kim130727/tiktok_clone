@@ -43,6 +43,7 @@ dependencies:
   video_player_web_hls: ^1.1.0
   fijkplayer: ^0.11.0
   marquee: ^2.2.3
+  google_fonts: ^4.0.1
 
 dev_dependencies:
   flutter_test:
