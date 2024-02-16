@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class VideoComments extends StatefulWidget {
   const VideoComments({super.key});
@@ -37,23 +38,20 @@ class _VideoCommentsState extends State<VideoComments> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isDark = isDarkMode(context);
     return Container(
-      height: size.height * 0.8,
-      //댓글창에 둥근 테두리를 그려보자
+      height: size.height * 0.75,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          Sizes.size14,
-        ),
+        borderRadius: BorderRadius.circular(Sizes.size14),
       ),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: isDark ? null : Colors.grey.shade50,
         appBar: AppBar(
-          backgroundColor: Colors.grey.shade50,
-          automaticallyImplyLeading: false, //backbutton 삭제
-          title: const Text("22796 comments"), //comments 숫자
+          backgroundColor: isDark ? null : Colors.grey.shade50,
+          automaticallyImplyLeading: false,
+          title: const Text("22796 comments"),
           actions: [
-            //닫는 X자 버튼
             IconButton(
               onPressed: _onClosePressed,
               icon: const FaIcon(FontAwesomeIcons.xmark),
@@ -74,16 +72,17 @@ class _VideoCommentsState extends State<VideoComments> {
                     left: Sizes.size16,
                     right: Sizes.size16,
                   ),
-                  separatorBuilder: (context, index) => Gaps.v10,
+                  separatorBuilder: (context, index) => Gaps.v20,
                   itemCount: 10,
                   itemBuilder: (context, index) => Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(
-                        radius: 10,
-                        child: Text("니꼬"),
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: isDark ? Colors.grey.shade500 : null,
+                        child: const Text("니꼬"),
                       ),
-                      Gaps.h8,
+                      Gaps.h10,
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,14 +90,13 @@ class _VideoCommentsState extends State<VideoComments> {
                             Text(
                               '니꼬',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: Sizes.size14,
-                                color: Colors.grey.shade500,
-                              ),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Sizes.size14,
+                                  color: Colors.grey.shade500),
                             ),
                             Gaps.v3,
                             const Text(
-                                "Thats not it Ive seen the same thing but also in a cave"),
+                                "That's not it l've seen the same thing but also in a cave,")
                           ],
                         ),
                       ),
@@ -127,7 +125,6 @@ class _VideoCommentsState extends State<VideoComments> {
                 bottom: 0,
                 width: size.width,
                 child: BottomAppBar(
-                  color: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Sizes.size16,
@@ -136,14 +133,15 @@ class _VideoCommentsState extends State<VideoComments> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          radius: 10,
+                          radius: 18,
                           backgroundColor: Colors.grey.shade500,
+                          foregroundColor: Colors.white,
                           child: const Text("니꼬"),
                         ),
                         Gaps.h10,
                         Expanded(
                           child: SizedBox(
-                            height: Sizes.size52,
+                            height: Sizes.size44,
                             child: TextField(
                               onTap: _onStartWriting,
                               expands: true,
@@ -152,56 +150,62 @@ class _VideoCommentsState extends State<VideoComments> {
                               textInputAction: TextInputAction.newline,
                               cursorColor: Theme.of(context).primaryColor,
                               decoration: InputDecoration(
-                                hintText: "Write a comment...",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    Sizes.size12,
+                                  hintText: "Add comment...",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      Sizes.size12,
+                                    ),
+                                    borderSide: BorderSide.none,
                                   ),
-                                  borderSide: BorderSide.none, //테두리가 사라짐
-                                ),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
-                                contentPadding: const EdgeInsets.symmetric(
-                                  vertical: Sizes.size2,
-                                  horizontal: Sizes.size10,
-                                ),
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: Sizes.size14),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.at,
-                                        color: Colors.grey.shade900,
-                                      ),
-                                      Gaps.h14,
-                                      FaIcon(
-                                        FontAwesomeIcons.gift,
-                                        color: Colors.grey.shade900,
-                                      ),
-                                      Gaps.h14,
-                                      FaIcon(
-                                        FontAwesomeIcons.faceSmile,
-                                        color: Colors.grey.shade900,
-                                      ),
-                                      Gaps.h14,
-                                      if (_isWriting)
-                                        GestureDetector(
-                                          onTap: _stopWriting,
-                                          child: FaIcon(
-                                            FontAwesomeIcons.circleArrowUp,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          ),
+                                  filled: true,
+                                  fillColor: isDark
+                                      ? Colors.grey.shade800
+                                      : Colors.grey.shade200,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: Sizes.size12,
+                                  ),
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: Sizes.size14),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.at,
+                                          color: isDark
+                                              ? Colors.grey.shade500
+                                              : Colors.grey.shade900,
                                         ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                        Gaps.h14,
+                                        FaIcon(
+                                          FontAwesomeIcons.gift,
+                                          color: isDark
+                                              ? Colors.grey.shade500
+                                              : Colors.grey.shade900,
+                                        ),
+                                        Gaps.h14,
+                                        FaIcon(
+                                          FontAwesomeIcons.faceSmile,
+                                          color: isDark
+                                              ? Colors.grey.shade500
+                                              : Colors.grey.shade900,
+                                        ),
+                                        Gaps.h14,
+                                        if (_isWriting)
+                                          GestureDetector(
+                                            onTap: _stopWriting,
+                                            child: FaIcon(
+                                              FontAwesomeIcons.circleArrowUp,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  )),
                             ),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),
