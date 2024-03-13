@@ -18,7 +18,7 @@ class SignUpScreen extends StatelessWidget {
   }
 
   void _onEmailTap(BuildContext context) {
-    Navigator.of(context).push(
+    /* Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const UsernameScreen(),
@@ -33,7 +33,7 @@ class SignUpScreen extends StatelessWidget {
           );
         },
       ),
-    );
+    ); */
     Navigator.of(context).pushNamed(UsernameScreen.routeName);
   }
 
