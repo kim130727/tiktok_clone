@@ -3,6 +3,7 @@ import 'package:tiktok_clone/features/email_screen.dart';
 import 'package:tiktok_clone/features/login_screen.dart';
 import 'package:tiktok_clone/features/sign_up_screen.dart';
 import 'package:tiktok_clone/features/username_screen.dart';
+import 'package:tiktok_clone/features/users/user_profile_screen.dart';
 
 final router = GoRouter(
   routes: [
@@ -21,6 +22,13 @@ final router = GoRouter(
     GoRoute(
       path: EmailScreen.routeName,
       builder: (context, state) => const EmailScreen(),
+    ),
+    GoRoute(
+      path: "/users/:username",
+      builder: (context, state) {
+        final username = state.pathParameters['username'];
+        return UserProfileScreen(username: username!);
+      },
     )
   ],
 );
