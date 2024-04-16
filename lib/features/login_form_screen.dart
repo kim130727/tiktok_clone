@@ -1,5 +1,6 @@
 //login_form_screen.dart
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -24,12 +25,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         //true만 아무런 에러가 없음
         _formkey.currentState!.save();
         //print(formData.values);
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const InterestsScreen(),
-          ),
-          (route) => false,
-        );
+        context.goNamed(InterestsScreen.routeName);
       }
     }
   }
